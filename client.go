@@ -96,7 +96,7 @@ func (c *Client) writePump() {
 	}
 }
 
-// Reads from WS connection
+// Reads from WebSocket connection
 func (c *Client) readPump() {
 	defer func() {
 		c.hub.unregister <- c
