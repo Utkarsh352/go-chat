@@ -216,6 +216,7 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "templates/index.html")
 }
 
+// Handler function for Vercel serverless function
 func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/":
@@ -229,10 +230,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 var hub *Hub
 
-func main() {
+// Initialize the Hub
+func init() {
 	hub = NewHub()
 	go hub.run()
-
-	http.HandleFunc("/", Handler)
-	log.Fatal(http.ListenAndServe(":3000", nil))
 }
