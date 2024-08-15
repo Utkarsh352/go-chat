@@ -13,7 +13,6 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-// Define your structures and constants
 type Client struct {
 	id   string
 	hub  *Hub
