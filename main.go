@@ -1,15 +1,32 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, Vercel!")
+func serveIndex(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+
+	if r.Method != "GET" {
+		http.Error(w, "method not found", http.StatusNotFound)
+		return
+	}
+
+	http.ServeFile(w, r, "templates/index.html")
 }
 
 func main() {
-	http.HandleFunc("/", handler)
-	http.ListenAndServe(":3000", nil)
+	hub := NewHub()
+	go hub.run()
+
+	http.HandleFunc("/", serveIndex)
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		serveWs(hub, w, r)
+	})
+
+	log.Fatal(http.ListenAndServe(":3000", nil))
 }
