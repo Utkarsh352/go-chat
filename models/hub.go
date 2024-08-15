@@ -1,4 +1,4 @@
-package main
+package models
 
 import (
 	"bytes"
@@ -35,7 +35,7 @@ func NewHub() *Hub {
 // which closes the client's send channel and removes the client from the h.clients map, disconnecting them.
 // This pattern ensures that one slow or unresponsive client doesn't block the system from sending messages to others.
 
-func (h *Hub) run() {
+func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.register:

@@ -1,4 +1,4 @@
-package main
+package models
 
 import (
 	"bytes"
@@ -35,7 +35,7 @@ const (
 	maxMessageSize = 512
 )
 
-func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
+func ServeWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
