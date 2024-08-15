@@ -1,6 +1,6 @@
-package main
+package models
 
 type Message struct {
 	ClientID string `json:"clientID"`
-	Text     string  `json:"text"`
+	Text     string `json:"text"`
 }
