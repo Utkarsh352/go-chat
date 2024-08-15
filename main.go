@@ -2,6 +2,7 @@ package handler
 
 import (
 	"bytes"
+	_ "embed"
 	"encoding/json"
 	"html/template"
 	"log"
@@ -12,6 +13,13 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
+
+// Embedding templates
+//go:embed templates/index.html
+var indexHTML []byte
+
+//go:embed templates/message.html
+var messageHTML []byte
 
 type Client struct {
 	id   string
@@ -94,7 +102,7 @@ func (h *Hub) run() {
 }
 
 func getMessageTemplate(msg *Message) []byte {
-	tmpl, err := template.ParseFiles("templates/message.html")
+	tmpl, err := template.New("message").Parse(string(messageHTML))
 	if err != nil {
 		log.Fatalf("template parsing: %s", err)
 	}
@@ -213,10 +221,9 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.ServeFile(w, r, "templates/index.html")
+	w.Write(indexHTML)
 }
 
-// Handler function for Vercel serverless function
 func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/":
