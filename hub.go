@@ -7,8 +7,7 @@ import (
 	"sync"
 )
 
-// Hub maintains the set of active clients and broadcasts messages to the
-// clients.
+// Hub maintains the set of active clients and broadcasts messages to the clients.
 type Hub struct {
 	sync.RWMutex
 
@@ -30,13 +29,12 @@ func NewHub() *Hub {
 	}
 }
 
-/*
-The select statement inside the loop is used to attempt a non-blocking send operation. If the client's send channel is ready to receive the message (i.e., it's not blocked), case client.send <- msg: will execute, sending the message to the client.
+// The select statement below tries to send a message to the client's send channel without blocking.
+// If the channel is ready to receive (not blocked), the message is sent successfully.
+// If the channel is not ready (client is unresponsive or the channel is full), the default case executes,
+// which closes the client's send channel and removes the client from the h.clients map, disconnecting them.
+// This pattern ensures that one slow or unresponsive client doesn't block the system from sending messages to others.
 
-If the client's send channel is not ready to receive the message (i.e., it's blocked because the client is not ready to receive data or the channel is full), the default: case will execute. This will close the client's send channel and remove the client from the h.clients map, effectively disconnecting the client.
-
-This code is a common pattern in Go for handling multiple clients and ensuring that if one client is slow or unresponsive, it doesn't block the entire system from sending messages to other clients.
-*/
 func (h *Hub) run() {
 	for {
 		select {
