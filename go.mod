@@ -1,6 +1,6 @@
 module github.com/utkarsh352/go-chat
 
-go 1.21.5
+go 1.22.4
 
 require github.com/gorilla/websocket v1.5.1
 
