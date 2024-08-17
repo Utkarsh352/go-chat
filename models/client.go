@@ -15,10 +15,11 @@ type Client struct {
 	id   string
 	hub  *Hub
 	conn *websocket.Conn
-	// Buffered channel of outbound messages.
+	// Buffered channel of outbound messages. (Buffered can have multiple values)
 	send chan []byte
 }
 
+// specifies parameters to upgrade http connection to websockets connection
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
@@ -36,6 +37,7 @@ const (
 )
 
 func ServeWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
+	// Upgrade upgrades the HTTP server connection to the WebSocket protocol.
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
