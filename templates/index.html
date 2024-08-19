@@ -8,33 +8,75 @@
     crossorigin="anonymous"></script>
   <!-- HTMX Websockets extension -->
   <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Bootstrap CSS and Script File -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
+    integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Go-chat</title>
+  <style>
+    /* Set the placeholder color to white */
+    form {
+      width: 60%;
+    }
+
+    /* Set the close button (X) color to white */
+    .btn-close {
+      filter: invert(1);
+    }
+  </style>
 </head>
 
-<body class="bg-gray-200 font-sans flex flex-col h-screen">
-  <header class="bg-blue-600 text-white p-4 text-center">
-    <h1 class="text-4xl font-semibold">Go-chat</h1>
-  </header>
+<body>
+  <div class="container" style="width: 50%; padding-top: 1rem;">
+    <header>
+      <h1><span class="badge rounded-pill text-bg-secondary">Go-chat</span></h1>
+      <br>
+    </header>
 
-  <main class="flex-grow p-4">
-    <div hx-ext="ws" ws-connect="/ws" class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg">
-      <div class="flex flex-col h-full">
-        <ul id="chat_room" hx-swap="beforeend" hx-swap-oob="beforeend" class="overflow-auto p-4">
-          <!-- Messages will be appended here -->
-        </ul>
+    <main>
+     
+       
 
-        <form id="form" ws-send hx-reset-on-success class="flex p-4 border-t border-gray-300">
-          <input name="text" type="text" class="flex-grow border-2 border-gray-300 p-2 rounded-lg" placeholder="Type your message" required>
-          <button type="submit" class="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Send</button>
-        </form>
+        
+  
+          <form class="d-flex" role="search" onsubmit="showAlert(event)">
+            <input class="form-control me-2 text-outline-secondary" type="search" placeholder="Type Your Message here">
+            <button class="btn btn-sm btn-outline-secondary" type="submit">Send</button>
+          </form>
+          <br>
+          <div id="alertContainer">
+            <!-- Hidden alert message -->
+            <div id="messageAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
+              Message Sent
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          
+        
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
+
+  <script>
+    function showAlert(event) {
+      event.preventDefault(); // Prevent the form from submitting
+
+      // Show the alert
+      var alertElement = document.getElementById('messageAlert');
+      alertElement.style.display = 'block';
+
+      // Optionally hide the alert after a few seconds
+      setTimeout(function () {
+        alertElement.style.display = 'none';
+      }, 3000); // 3 seconds
+    }
+  </script>
 </body>
 
 </html>
